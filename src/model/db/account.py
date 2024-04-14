@@ -18,7 +18,7 @@ class Account(Base):
     create_at: Mapped[datetime.datetime] = mapped_column(name="create_at", type_=sqlalchemy.DateTime(timezone=True),
                                                          nullable=False, server_default=functions.now())
     update_at: Mapped[datetime.datetime] = mapped_column(name="update_at", type_=sqlalchemy.DateTime(timezone=True),
-                                                         nullable=False, server_default=functions.now())
+                                                         nullable=False, server_onupdate=sqlalchemy.schema.FetchedValue(for_update=True))
 
     @property
     def hash_salt(self) -> str:
