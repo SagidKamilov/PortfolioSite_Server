@@ -1,10 +1,12 @@
 alembic
 asyncio
 asyncpg
-bcrypt
+bcrypt==4.0.1
+pillow==10.3.0
 colorama
 email-validator
 fastapi
+python-multipart
 httpx
 isort
 loguru
