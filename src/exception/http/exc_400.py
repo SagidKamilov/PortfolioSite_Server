@@ -1,6 +1,6 @@
 import fastapi
 
-from src.messages.exceptions.http_details import (
+from src.message.exceptions.http_details import (
     http_400_signin_credentials_details,
     http_400_signup_credentials_details,
     http_400_username_details,

@@ -5,7 +5,7 @@ import pathlib
 import aiofiles
 from aiofiles import os
 
-from src.exceptions.photo import PhotoSaveException, PhotoDeleteException
+from src.exception.photo import PhotoSaveException, PhotoDeleteException
 from src.utility import PillowImage
 from PIL import Image
 

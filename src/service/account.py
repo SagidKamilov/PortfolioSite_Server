@@ -1,5 +1,5 @@
 from src.repository.account import AccountRepository
-from src.model.schemas.account import AccountCreate
+from src.model.schema.account import AccountCreate
 
 
 class AccountService:

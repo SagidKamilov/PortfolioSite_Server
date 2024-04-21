@@ -6,8 +6,8 @@ from sqlalchemy.sql import functions
 from src.repository.base import BaseRepository
 from src.model.db.project import Project
 from src.model.db.project_picture import ProjectPicture
-from src.model.schemas.project import ProjectCreatePhotos, ProjectUpdatePhotos, Photos
-from src.exceptions.database import EntityDoesNotExist, EntityAlreadyExists
+from src.model.schema.project import ProjectCreatePhotos, ProjectUpdatePhotos, Photos
+from src.exception.database import EntityDoesNotExist, EntityAlreadyExists
 
 
 class ProjectRepository(BaseRepository):

@@ -2,8 +2,8 @@ from typing import List
 
 from src.repository.project import ProjectRepository
 from src.model.db.project import Project
-from src.model.schemas.project import ProjectCreatePhotos, ProjectUpdatePhotos, Photos
-from src.exceptions.database import EntityDoesNotExist
+from src.model.schema.project import ProjectCreatePhotos, ProjectUpdatePhotos, Photos
+from src.exception.database import EntityDoesNotExist
 
 
 class ProjectService:

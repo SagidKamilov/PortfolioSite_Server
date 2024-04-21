@@ -2,8 +2,8 @@ from typing import List, Annotated
 
 from fastapi import APIRouter, File, UploadFile, Form
 
-from src.api.dependencies.service_container import get_project_service
-from src.model.schemas.project import ProjectCreate, ProjectResponse, Photos
+from src.api.dependency.service_container import get_project_service
+from src.model.schema.project import ProjectCreate, ProjectResponse, Photos
 
 
 router = APIRouter(prefix="/project")
@@ -29,5 +29,6 @@ async def create_project(main_photo: UploadFile,
         id=project.id,
         title=project.title,
         desctiption=project.description,
-        main_photo=project.
-    )
+        main_photo=project.project_pictures.
+    ) # Переделать таблицу хранения картинок для проекта. Хранить все фотографии со связью один к одному.
+    # В одной записи картинки должны быть 3-8 картинки

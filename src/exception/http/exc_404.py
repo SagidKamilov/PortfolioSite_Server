@@ -1,6 +1,6 @@
 import fastapi
 
-from src.messages.exceptions.http_details import (
+from src.message.exceptions.http_details import (
     http_404_id_details,
     http_404_username_details,
 )

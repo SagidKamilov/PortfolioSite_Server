@@ -1,6 +1,6 @@
 import fastapi
 
-from src.messages.exceptions.http_details import http_401_unauthorized_details
+from src.message.exceptions.http_details import http_401_unauthorized_details
 
 
 async def http_exc_401_cunauthorized_request() -> Exception:

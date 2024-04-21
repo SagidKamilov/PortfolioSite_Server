@@ -18,4 +18,4 @@ class Project(Base):
                                                          nullable=False, server_default=functions.now())
     update_at: Mapped[datetime.datetime] = mapped_column(name="update_at", type_=sqlalchemy.DateTime(timezone=True),
                                                          server_default=functions.now())
-    # project_pictures: Mapped[List["ProjectPicture"]] = relationship(back_populates="projects")
+    project_pictures: Mapped[List["ProjectPicture"]] = relationship(back_populates="projects")

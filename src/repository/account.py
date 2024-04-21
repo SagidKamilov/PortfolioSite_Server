@@ -5,8 +5,8 @@ from sqlalchemy.sql.functions import now
 
 from src.repository.base import BaseRepository
 from src.model.db.account import Account
-from src.model.schemas.account import AccountCreate, AccountLogin, AccountUpdate
-from src.exceptions.database import EntityDoesNotExist, EntityAlreadyExists, PasswordDoesNotMatch
+from src.model.schema.account import AccountCreate, AccountLogin, AccountUpdate
+from src.exception.database import EntityDoesNotExist, EntityAlreadyExists, PasswordDoesNotMatch
 
 
 class AccountRepository(BaseRepository):

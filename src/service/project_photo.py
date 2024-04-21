@@ -3,7 +3,7 @@ from typing import List, Any
 from src.model.db.project import Project
 from src.service.project import ProjectService
 from src.service.photo import PhotoService
-from src.model.schemas.project import ProjectCreate, ProjectCreatePhotos, ProjectUpdate, ProjectUpdatePhotos, Photos
+from src.model.schema.project import ProjectCreate, ProjectCreatePhotos, ProjectUpdate, ProjectUpdatePhotos, Photos
 
 
 class DataControlService:

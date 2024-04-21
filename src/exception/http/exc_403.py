@@ -1,6 +1,6 @@
 import fastapi
 
-from src.messages.exceptions.http_details import http_403_forbidden_details
+from src.message.exceptions.http_details import http_403_forbidden_details
 
 
 async def http_403_exc_forbidden_request() -> Exception:
