@@ -3,21 +3,17 @@ from typing import List
 from pydantic import BaseModel
 
 
-class Photos(BaseModel):
-    main_photo: str
-    additional_photo: str
-    description_photos: List[str]
-
-
 class ProjectCreate(BaseModel):
     title: str
     description: str
 
 
-class ProjectCreatePhotos(BaseModel):
+class ProjectCreatePicture(BaseModel):
     title: str
     description: str
-    photos: Photos
+    main_picture: str
+    additional_picture: str
+    description_pictures: List[str]
 
 
 class ProjectUpdate(BaseModel):
@@ -25,14 +21,18 @@ class ProjectUpdate(BaseModel):
     description: str
 
 
-class ProjectUpdatePhotos(BaseModel):
+class ProjectUpdatePictures(BaseModel):
     title: str | None
     description: str | None
-    photos: Photos
+    main_picture: str
+    additional_picture: str
+    description_pictures: List[str]
 
 
 class ProjectResponse(BaseModel):
     id: int
     title: str
     description: str
-    photos: Photos
+    main_picture: str
+    additional_picture: str
+    description_pictures: List[str]
