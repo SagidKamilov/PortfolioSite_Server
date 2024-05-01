@@ -24,3 +24,8 @@ class AccountResponse(BaseModel):
     id: int
     username: str
     role: str
+
+
+class AccountRole(BaseModel):
+    admin: str = "admin"
+    manager: str = "manager"

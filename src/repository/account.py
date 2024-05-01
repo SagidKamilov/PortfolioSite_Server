@@ -1,92 +1,105 @@
-from typing import Sequence
+from typing import List
 
 import sqlalchemy
-from sqlalchemy.sql.functions import now
 
 from src.repository.base import BaseRepository
 from src.model.db.account import Account
 from src.model.schema.account import AccountCreate, AccountLogin, AccountUpdate
-from src.exception.database import EntityDoesNotExist, EntityAlreadyExists, PasswordDoesNotMatch
 
 
 class AccountRepository(BaseRepository):
-    async def create_account(self, account_create: AccountCreate):
+    async def create_account(self, account_create: AccountCreate) -> Account:
         new_account = Account(username=account_create.username, hash_password=account_create.password, role=account_create.role)
         self.session.add(instance=new_account)
         await self.session.commit()
+
         return new_account
 
-    async def read_accounts(self) -> Sequence[Account]:
+    async def get_all_accounts(self) -> List[Account]:
         stmt = sqlalchemy.select(Account)
-        query = await self.session.execute(statement=stmt)
-        return query.scalars().all()
+        accounts = await self.session.execute(statement=stmt)
+        accounts = accounts.scalars()
 
-    async def read_account_by_id(self, account_id: int) -> Account:
+        accounts = [
+            account for account in accounts
+        ]
+
+        return accounts
+
+    async def get_account_by_id(self, account_id: int) -> Account | None:
         stmt = sqlalchemy.select(Account).where(Account.id == account_id)
-        query = await self.session.execute(statement=stmt)
-        if not query:
-            raise EntityDoesNotExist(f"Аккаунт с id = `{account_id}` не существует!")
-        return query.scalar()
+        account = await self.session.execute(statement=stmt)
+        account = account.scalar()
 
-    async def read_account_by_username(self, username: str) -> Account:
+        if not account:
+            return None
+
+        return account
+
+    async def get_account_by_username(self, username: str) -> Account:
         stmt = sqlalchemy.select(Account).where(Account.username == username)
-        query = await self.session.execute(statement=stmt)
-        if not query:
-            raise EntityDoesNotExist(f"Аккаунт с именем пользователя = `{username}` не существует!")
-        return query.scalar()
+        account = await self.session.execute(statement=stmt)
+        account = account.scalar()
 
-    async def read_user_by_password(self, account_login: AccountLogin) -> Account:
+        if not account:
+            raise Exception(f"Аккаунт с именем пользователя = `{username}` не существует!")
+
+        return account
+
+    async def get_user_by_password(self, account_login: AccountLogin) -> Account | None:
         stmt = sqlalchemy.select(Account).where(Account.username == account_login.username)
-        query = await self.session.execute(statement=stmt)
-        found_account = query.scalar()
-        if not found_account:
-            raise EntityDoesNotExist("Неправильное имя пользователя!")
-        if found_account.password != account_login.password:
-            raise PasswordDoesNotMatch("Неправильный пароль!")
-        return found_account
+        account = await self.session.execute(statement=stmt)
+        account = account.scalar()
 
-    async def update_account_by_id(self, account_id: int, account_update: AccountUpdate) -> Account:
+        if not account:
+            return None
+
+        if account_login.password != account.hash_password:
+            return None
+
+        return account
+
+    async def update_account_by_id(self, account_id: int, account_update: AccountUpdate) -> Account | None:
         select_stmt = sqlalchemy.select(Account).where(Account.id == account_id)
-        query = await self.session.execute(statement=select_stmt)
-        update_account = query.scalar()
+        account = await self.session.execute(statement=select_stmt)
+        account = account.scalar()
 
-        if not update_account:
-            raise EntityDoesNotExist(f"Аккаунт с id = `{account_id}` не существует!")
-
-        update_stmt = sqlalchemy.update(table=Account).where(Account.id == update_account.id).values(
-            updated_at=now())
+        if not account:
+            return None
 
         if account_update.username:
-            update_stmt = update_stmt.values(username=account_update.username)
+            account.username = account_update.username
 
         if account_update.role:
-            update_stmt = update_stmt.values(role=account_update.role)
+            account.role = account_update.role
 
         if account_update.password:
-            update_stmt = update_stmt.values(password=account_update.password)
+            account.hash_password = account_update.password
 
-        await self.session.execute(statement=update_stmt)
         await self.session.commit()
-        return update_account
+        return account
 
-    async def delete_account_by_id(self, account_id: int) -> str:
+    async def delete_account_by_id(self, account_id: int) -> str | None:
         select_stmt = sqlalchemy.select(Account).where(Account.id == account_id)
         query = await self.session.execute(statement=select_stmt)
-        delete_account = query.scalar()
+        account = query.scalar()
 
-        if not delete_account:
-            raise EntityDoesNotExist(f"Аккаунт с id = `{account_id}` не был найден!")
+        if not account:
+            return None
 
-        stmt = sqlalchemy.delete(table=Account).where(Account.id == delete_account.id)
+        stmt = sqlalchemy.delete(table=Account).where(Account.id == account.id)
 
         await self.session.execute(statement=stmt)
         await self.session.commit()
 
         return f"Аккаунт с id = '{account_id}' был успешно удален!"
 
-    async def check_login(self, username):
+    async def check_username(self, username) -> Account | None:
         stmt = sqlalchemy.select(Account).where(Account.username == username)
-        checked_account = await self.session.execute(stmt)
+        account = await self.session.execute(stmt)
+        account = account.scalar()
 
-        if checked_account:
-            raise EntityAlreadyExists(f"Имя `{username}` уже занято!")
+        if not account:
+            return None
+
+        return account

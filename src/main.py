@@ -6,7 +6,7 @@ from src.api.endpoints import router
 from src.config import settings
 
 # app = FastAPI(prefix=settings.API_PREFIX)
-app = FastAPI()
+app = FastAPI(prefix="api/v1/")
 # app.add_middleware(
 #     CORSMiddleware,
 #     # allow_origins=[settings.ALLOWED_ORIGINS],

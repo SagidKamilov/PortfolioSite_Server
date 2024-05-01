@@ -1,7 +1,9 @@
-from src.model.db.base import Base, engine
-from src.model.db.account import Account
-from src.model.db.project import Project
-from src.model.db.project_picture import ProjectPicture
+import asyncio
+from src.api.dependency.service_container import async_database
+from src.model.db.base import Base
+
+
+engine = async_database.get_engine()
 
 
 async def create_database():
@@ -10,5 +12,4 @@ async def create_database():
         # await conn.run_sync(Base.metadata.drop_all)
 
 
-import asyncio
 asyncio.run(create_database())

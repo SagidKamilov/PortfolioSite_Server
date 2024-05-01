@@ -6,10 +6,11 @@ from sqlalchemy.sql import functions
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.model.db.base import Base
+# from src.model.db.many_to_many import project_tag
 
 
 class Project(Base):
-    __tablename__ = "projects"
+    __tablename__ = "project"
 
     id: Mapped[int] = mapped_column(name="id", primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(name="title", type_=sqlalchemy.String(length=255), nullable=False)
@@ -20,6 +21,7 @@ class Project(Base):
                                                          nullable=False, server_default=functions.now())
     update_at: Mapped[datetime.datetime] = mapped_column(name="update_at", type_=sqlalchemy.DateTime(timezone=True),
                                                          server_default=functions.now())
-    # account_id: Mapped[int] = mapped_column(sqlalchemy.ForeignKey("accounts.id"))
-    # account: Mapped["Account"] = relationship(back_populates="project")
-    project_pictures: Mapped[List["ProjectPicture"]] = relationship(back_populates="project")
+    account_id: Mapped[int] = mapped_column(sqlalchemy.ForeignKey("account.id"))
+    account: Mapped["Account"] = relationship(back_populates="projects")
+    project_pictures: Mapped[List["Picture"]] = relationship(back_populates="project")
+    # tags: Mapped[List["Tag"]] = relationship(secondary=project_tag, back_populates="projects")
